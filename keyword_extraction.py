@@ -155,6 +155,3 @@ def keywordExtraction(sentences, candidate_pos, window_size, lower = True):
         tr.analyze(sentence, candidate_pos = candidate_pos, window_size = window_size , lower = lower)
         result.append(tr.get_keywords(len(nltk.tokenize.word_tokenize(sentence))))
     return result
-
-# texts = ['my name is Rohan Solsi studying in KJSCE LY Comps-A', ' i was diagnosed with fever','i have medical certificate enclosed','grant me leave','i','leave']
-# print(keywordExtraction(texts, ['NOUN','VERB','NUM'], 4, True))

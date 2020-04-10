@@ -4,6 +4,8 @@ from nltk.tokenize import sent_tokenize
 from keyword_extraction import keywordExtraction
 from named_entity_recognition import extract_named_entities
 from synonyms_extraction import get_synonyms
+import json
+from keyword_search import search_from_keywords
 
 
 app = Flask(__name__)  # static_url_path='', static_folder='static')
@@ -28,10 +30,14 @@ def recieve_transcripts():
     synonyms = []
     for keywords_list in keywords:
         synonyms.append(get_synonyms(keywords_list))
-    print(keywords)
-    print(named_entities)
-    print(synonyms)
-    return str(keywords) + "\n" + str(named_entities) + "\n" + str(synonyms), 200
+    print(len(synonyms),len(keywords))
+    sentences = search_from_keywords(synonyms)
+    _output = {}
+    _output['keywords'] = keywords
+    _output['options'] = named_entities
+    _output['synonyms'] = synonyms
+    _output['sentences'] = sentences
+    return json.dumps(_output), 200
 
 
 @app.route('/login', methods=['GET', 'POST'])
