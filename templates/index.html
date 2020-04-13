@@ -1,8 +1,37 @@
 <html>
    <body>
-      <form action = "http://localhost:8080/letter" method = "POST">
-         <p>Name <input type = "text" name = "message" /></p>
-         <p><input type = "submit" value = "submit" /></p>
+      <form id="mainForm">
+         <!-- <p>Name <input type = "text" name = "userInput" /></p> -->
+
+         <div>
+            <label>Phrases: </label>
+            <textarea id="input" rows="4" cols="50" name="userInput"></textarea>
+         </div>
+
+         <p><input type = "button" onclick="submitForm()" value = "submit" /></p>
       </form>
+
+      <div>
+         <label>Output:</label>
+      <textarea id="output" rows="10" cols="80">
+      
+      </textarea>
+      </div>
+      
    </body>
+   <script type="text/javascript">
+      async function submitForm() 
+      {
+         var form = document.getElementById("mainForm");
+         var input = form.userInput.value;
+         var url = 'http://localhost:8080/letter';
+         req_body = {message : input};
+         // console.log(req_body);
+         const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)});
+         const jsonobj = await def.json();
+         console.log(jsonobj);
+         document.getElementById("output").innerHTML = jsonobj['sentences'];
+      }
+   </script>
+   
 </html>
