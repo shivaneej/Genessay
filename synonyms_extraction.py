@@ -59,5 +59,5 @@ def get_synonyms(list_of_keywords): #check synonyms in cache file
     return synonyms_dict_result
 
 
-with open('synonyms.json') as json_file: 
+with open('dataset/synonyms.json') as json_file: 
     synonyms_table = json.load(json_file) 

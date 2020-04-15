@@ -17,13 +17,13 @@ class Entry(object):
       return self.matched > other.matched
     else:
       if self.rank_sum != other.rank_sum:
-        return self.rank_sum < other.rank_sum
+        return self.rank_sum > other.rank_sum
       else:
         return self.ratio > other.ratio
 
 
 def read_dataset():
-    ipFile = open('integrated.txt','r', encoding='utf-8')
+    ipFile = open('dataset/integrated.txt','r', encoding='utf-8')
     sentences = []
     for line in ipFile.readlines():
         sentences.extend(nltk.tokenize.sent_tokenize(line))
@@ -36,6 +36,7 @@ def search_from_keywords(synonyms_list):
     final_result = []
     for synonyms_dict in synonyms_list:
         keywords_list = list(synonyms_dict.keys())
+        # print("for keywords", keywords_list)
         threshold = 0.5 * len(keywords_list)
         if not keywords_list:
             final_result.append(None)
@@ -48,14 +49,18 @@ def search_from_keywords(synonyms_list):
             keywords_found = set(keyword_processor.extract_keywords(sent))
             if keywords_found:
                 entry_obj = Entry(list(keywords_found), sent)
-                if entry_obj.matched < threshold:
-                    continue
-                matched_sentences.put(entry_obj)
-        best_sentence = matched_sentences.get()
-        if not best_sentence:
-            final_result.append(None)
+                # if entry_obj.matched < threshold:
+                #     continue
+                # print(entry_obj.matched, threshold)
+                if entry_obj.matched >= threshold:
+                  # print("trying to add", sent)
+                  matched_sentences.put(entry_obj)
+                  # print("added")
+        if not matched_sentences.empty():
+          best_sentence = matched_sentences.get()
+          final_result.append(best_sentence.sentence)
         else:
-            final_result.append(best_sentence.sentence)
+            final_result.append(None)            
     return final_result
 
 
