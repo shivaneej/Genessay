@@ -10,6 +10,10 @@ from flask_cors import CORS
 from flashtext import KeywordProcessor
 from sentence_completion import complete_sentences
 import re
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+import os
+from model import load
+# from sample import generate_text
 
 app = Flask(__name__)  # static_url_path='', static_folder='static')
 cors = CORS(app)
@@ -37,6 +41,10 @@ def generate_letter():
     for keywords_list in keywords:
         synonyms.append(get_synonyms(keywords_list))
     sentences = search_from_keywords(synonyms)
+    num_of_sentences = len(sentences)
+    for i in range(num_of_sentences):
+        if sentences[i] == None:  
+            sentences[i] = generate_text(keywords[i]) + "."
     for index in range(len(sentences)):
         sentence = sentences[index]
         keyword_processor = KeywordProcessor()
@@ -59,7 +67,24 @@ def generate_letter():
 def app_error(e):
     return jsonify({"message": str(e)}), 400
 
+def generate_text(input_keywords):
+    path = os.getcwd()    
+    parser = ArgumentParser(formatter_class = ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--data-dir', type = str, default = path, help = 'data directory containing input.txt')
+    parser.add_argument('--seed', type = str, default=' '.join(input_keywords),help = 'seed string for sampling')
+    parser.add_argument('--length', type = int, default = int(1.5*len(input_keywords)) ,help = 'length of the sample to generate') #change the '8' to change number of words
+    parser.add_argument('--diversity', type = float, default = 0.01, help = 'Sampling diversity')
+    args = parser.parse_args()
+    model = load(args.data_dir)
+    del args.data_dir
+    sentence = model.sample(**vars(args))
+    return sentence
+    
+
 
 if __name__ == '__main__':
     app.register_error_handler(Exception, app_error)
     app.run(host='localhost', port=8080, debug=True)
+
+
+
