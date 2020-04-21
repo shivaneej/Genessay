@@ -1,0 +1,103 @@
+.navbar-default {
+    background: none;
+    border: none;
+}
+
+.media-body {
+    width: auto;
+}
+
+.owl-carousel .owl-item img {
+    width: auto;
+    max-width: 100%;
+}
+
+.well {
+    background-color: #ffffff;
+    border: medium none;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 2px;
+}
+
+.well.well-hover {
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0);
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+}
+
+.well.well-hover:hover {
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+}
+
+.media-right,
+.media > .pull-right {
+    padding-left: 20px;
+}
+
+.media-left,
+.media > .pull-left {
+    padding-right: 20px;
+}
+
+.panel-default {
+    border: medium none;
+    box-shadow: 2px 2px 7px -2px #dddddd;
+    margin-bottom: 20px !important;
+    padding: 5px;
+}
+
+.panel-default > .panel-heading {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.panel-default > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: transparent;
+}
+
+.panel {
+    border: medium none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.well.well-lg {
+    padding: 50px;
+}
+
+.form-control {
+    border-radius: 2px;
+    margin-bottom: 20px;
+    min-height: 40px;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+    background: none;
+}
+
+.panel-title a {
+    display: block;
+}
+
+.breadcrumb {
+    background: none;
+}
+
+blockquote {
+    font-size: 15px;
+    padding: 30px;
+}
+
+.input-group-btn .btn {
+    height: 40px;
+}
