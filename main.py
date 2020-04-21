@@ -32,30 +32,44 @@ def render():
 
 @app.route('/letter', methods=['POST']) #process user input
 def generate_letter():
-    _input = request.get_json().get('message')
-    keyphrases = nltk.sent_tokenize(_input)
+    _input = request.get_json().get('message') #string
+    keyphrases = nltk.sent_tokenize(_input) #list of strings
     print(keyphrases)
     named_entities = extract_named_entities(_input) 
+    #keywords extraction
     keywords = keywordExtraction(keyphrases, ['NOUN','VERB','NUM'], 4, True)
+
+    #synonyms extraction
     synonyms = []
     for keywords_list in keywords:
         synonyms.append(get_synonyms(keywords_list))
+
+    #search sentences from dataset
     sentences = search_from_keywords(synonyms)
     num_of_sentences = len(sentences)
+    print(sentences)
+
+    #generate sentences from model
     for i in range(num_of_sentences):
         if sentences[i] == None:  
-            sentences[i] = generate_text(keywords[i]) + "."
+            sentences[i] = generate_text(keyphrases[i]) + "."
+    
+    #replace named entity tags
     for index in range(len(sentences)):
         sentence = sentences[index]
         keyword_processor = KeywordProcessor()
         keyword_dict = {'~' :  NAMED_ENTITY_TAGS}
         keyword_processor.add_keywords_from_dict(keyword_dict)
         sentences[index] = keyword_processor.replace_keywords(sentence)
+    
+    #fill blanks using PMI
     predicted_options = complete_sentences(sentences, keywords, named_entities)
     print(predicted_options)
     joined_sentences = ' '.join(sentences)
     for answer in list(predicted_options.values()):
         joined_sentences = re.sub('~', answer, joined_sentences, 1)
+
+    #return output
     _output = {}
     _output['keywords'] = keywords
     _output['options'] = named_entities
@@ -71,7 +85,7 @@ def generate_text(input_keywords):
     path = os.getcwd()    
     parser = ArgumentParser(formatter_class = ArgumentDefaultsHelpFormatter)
     parser.add_argument('--data-dir', type = str, default = path, help = 'data directory containing input.txt')
-    parser.add_argument('--seed', type = str, default=' '.join(input_keywords),help = 'seed string for sampling')
+    parser.add_argument('--seed', type = str, default= input_keywords,help = 'seed string for sampling')
     parser.add_argument('--length', type = int, default = int(1.5*len(input_keywords)) ,help = 'length of the sample to generate') #change the '8' to change number of words
     parser.add_argument('--diversity', type = float, default = 0.01, help = 'Sampling diversity')
     args = parser.parse_args()

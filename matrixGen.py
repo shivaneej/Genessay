@@ -11,7 +11,7 @@ def extractNGrams(sentence,n):
   NGrams = ['_'.join(t.strip() for t in tup) for tup in output]
   return NGrams
 
-def makeMatrix():
+def makeMatrix(matrixDict, uniqueNGrams):
     for rowname in matrixDict.keys():
         row = matrixDict.get(rowname)
         cols = row.keys()
@@ -20,10 +20,7 @@ def makeMatrix():
                 row[ngram] = 0
         matrixDict[rowname] = row
 
-
-
-def saveMatrix(filename):
-    # print(uniqueNGrams)
+def saveMatrix(filename, matrixDict, uniqueNGrams):
     csvfile = open(filename, 'w',newline='')
     row = [" "]
     row.extend(list(uniqueNGrams))
@@ -34,9 +31,9 @@ def saveMatrix(filename):
         row.extend([matrixDict[rowname].get(col) for col in uniqueNGrams])
         filewriter.writerow(row)
 
-def wordContext(listNGrams, uniqueNGrams):
+def wordContext(listNGrams, uniqueNGrams, matrixDict):
     n = len(listNGrams)
-    uniqueNGrams |= set(listNgrams)
+    uniqueNGrams |= set(listNGrams)
     for i in range(n-1):
         current = listNGrams[i] 
         nextWord = listNGrams[i+1]
@@ -51,15 +48,21 @@ def wordContext(listNGrams, uniqueNGrams):
     return matrixDict
 
 
-leaveSamples=open('Keywords - Leave Samples.csv')
+def updateMatrices(data_dir):
+    DATASET_FILE = data_dir + DATASET_FILENAME
+    for i in range(N):
+        sample_file = open(DATASET_FILE, 'r', encoding='utf-8')
+        data = sample_file.read()
+        samples = list(data.split("\n\n"))
+        matrixDict = {}
+        uniqueNGrams = set()
+        for sample in samples:
+            listNgrams = extractNGrams(sample, i + 1)
+            matrixDict = wordContext(listNgrams, uniqueNGrams, matrixDict)
+        makeMatrix(matrixDict, uniqueNGrams)
+        saveMatrix(data_dir + '/' + OP_FILE_NAMES[i], matrixDict, uniqueNGrams)
 
-csvReader = csv.reader(leaveSamples)
-matrixDict = {}
-uniqueNGrams = set()
-for row in csvReader:
-    sent = row[0]
-    listNgrams = extractNGrams(sent,1)
-    matrixDict = wordContext(listNgrams, uniqueNGrams)
-makeMatrix()
-saveMatrix("unigrams.csv")
 
+DATASET_FILENAME = '/test.txt'
+OP_FILE_NAMES = ['unigrams.csv', 'bigrams.csv', 'trigrams.csv']
+N = len(OP_FILE_NAMES)

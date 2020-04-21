@@ -49,13 +49,8 @@ def search_from_keywords(synonyms_list):
             keywords_found = set(keyword_processor.extract_keywords(sent))
             if keywords_found:
                 entry_obj = Entry(list(keywords_found), sent)
-                # if entry_obj.matched < threshold:
-                #     continue
-                # print(entry_obj.matched, threshold)
                 if entry_obj.matched >= threshold:
-                  # print("trying to add", sent)
                   matched_sentences.put(entry_obj)
-                  # print("added")
         if not matched_sentences.empty():
           best_sentence = matched_sentences.get()
           final_result.append(best_sentence.sentence)
@@ -63,7 +58,4 @@ def search_from_keywords(synonyms_list):
             final_result.append(None)            
     return final_result
 
-
-# test = [{"studying": ["boning (up)", "chewing over", "cogitating", "conning", "considering", "contemplating", "debating", "deliberating", "entertaining", "eyeing", "kicking around", "learning", "meditating", "memorizing", "mulling (over)", "perpending", "pondering", "poring (over)", "questioning", "revolving", "ruminating", "thinking (about or over)", "turning", "weighing", "wrestling (with)"]}, {"diagnosed": ["diagnoses", "diagnosis", "diagnostic", "misdiagnosed", "diagnostics", "overdiagnosed", "diagnostical", "diagramed", "dismissed", "disclosed", "diagnostician", "disposed", "diagnostically", "misdiagnoses", "diagnosticians", "underdiagnosed", "misdiagnose", "overdiagnoses", "diagrammed", "overdiagnose"], "fever": ["affection", "ail", "ailment", "bug", "complaint", "complication", "condition", "disease", "disorder", "distemper", "distemperature", "ill", "illness", "indisposition", "infirmity", "malady", "sickness", "trouble", "unhealthiness", "unsoundness"]}, {"certificate": ["blank", "certification", "document", "form", "instrument", "paper"], "enclosed": ["anchored", "bolted", "bound", "caged", "caught", "chained", "confined", "fastened", "fettered", "immured", "imprisoned", "kidnapped", "leashed", "manacled", "penned", "restrained", "shackled", "tied", "unfree"]}, {"grant": ["allocation", "allotment", "annuity", "appropriation", "entitlement", "subsidy", "subvention"], "leave": ["allowance", "authorization", "clearance", "concurrence", "consent", "granting", "green light", "license", "permission", "sanction", "sufferance", "warrant"]}, {}]
-# print(search_from_keywords(test))
 
