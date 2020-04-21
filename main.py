@@ -28,7 +28,7 @@ def health():
 
 @app.route('/') #render main html page
 def render():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route('/letter', methods=['POST']) #process user input
 def generate_letter():
