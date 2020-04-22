@@ -7,6 +7,7 @@ import nltk
 import csv
 import nltk
 import spacy
+import time
 
 unigrams = 'dataset/unigrams.csv'
 bigrams = 'dataset/bigrams.csv'
@@ -24,7 +25,11 @@ class Matrix:
         except StopIteration:
             pass
         self.rownames = []
+        self.row_index = {}
+        index = 0
         for line in reader:
+            self.row_index[line[0]] = index
+            index += 1
             self.rownames.append(line[0])            
             # self.mat.append(array(map(float, line[1: ])))
             self.mat.append(np.asarray([float(val) for val in line[1:]]))
@@ -32,10 +37,8 @@ class Matrix:
         self.mat = np.asarray(self.mat)
 
     def get_word_index(self, word):
-        if word not in self.rownames:
-            return -1
-        return self.rownames.index(word)
-      
+        return self.row_index.get(word, -1)
+
     def get_value(self, i1, i2):
         return self.mat[i1, i2]
           
@@ -140,9 +143,11 @@ def get_option_score(p, options, features, named_entities): #pmi score for optio
     option_score = 0.0
     for option in options:
         for feature in features:   
-            option_entity = named_entities.get(option)    
+            option_entity = named_entities.get(option)
+            t = time.time()    
             feature_word_index = p.get_word_index(feature)
             option_index = p.get_word_index(option)
+            print("Searching time", time.time() - t)
             if (feature_word_index != -1 and option_index != -1):
                 pmi = p.get_value(feature_word_index, option_index)
                 option_score += pmi              
@@ -150,7 +155,9 @@ def get_option_score(p, options, features, named_entities): #pmi score for optio
 
 def predict_blank(ngram_type, questions, options, dependencies, parts_of_speech, keywords, named_entities):
     cooccurrences = globals()[ngram_type+'s']
+    t = time.time()
     m = Matrix(cooccurrences)
+    print("Load time for reading", ngram_type, time.time() - t)
     p = pmi(m, positive=True, discounting=True)
     return evaluate(p, ngram_type, questions, options, dependencies, parts_of_speech, keywords, named_entities)
 
