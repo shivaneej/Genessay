@@ -8,16 +8,20 @@ import json
 from keyword_search import search_from_keywords
 from flask_cors import CORS
 from flashtext import KeywordProcessor
-from sentence_completion import complete_sentences
+from sentence_completion import complete_sentences, Matrix, pmi
 import re
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import os
 from model import load
+import time
 # from sample import generate_text
 
 app = Flask(__name__)  # static_url_path='', static_folder='static')
 cors = CORS(app)
 NAMED_ENTITY_TAGS = ['PERSON', 'NORP', 'FAC', 'ORG', 'GPE', 'LOC', 'PRODUCT', 'EVENT', 'WORK_OF_ART', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']
+unigram_mat = None
+bigram_mat = None
+trigram_mat = None
 
 @app.route('/health', methods=['GET']) #to check the API health
 def health():
@@ -63,7 +67,7 @@ def generate_letter():
         sentences[index] = keyword_processor.replace_keywords(sentence)
     
     #fill blanks using PMI
-    predicted_options = complete_sentences(sentences, keywords, named_entities)
+    predicted_options = complete_sentences(sentences, keywords, named_entities, unigram_mat, bigram_mat, trigram_mat)
     print(predicted_options)
     joined_sentences = ' '.join(sentences)
     for answer in list(predicted_options.values()):
@@ -93,12 +97,39 @@ def generate_text(input_keywords):
     del args.data_dir
     sentence = model.sample(**vars(args))
     return sentence
-    
+
+def initServer():
+    global unigram_mat, bigram_mat, trigram_mat
+    # unigram_mat = None
+    # bigram_mat = N
+    ngrams_dict = {
+        1: 'uni', 2: 'bi', 3: 'tri'
+    }
+    unigrams = 'dataset/unigrams.csv'
+    bigrams = 'dataset/bigrams.csv'
+    trigrams = 'dataset/trigrams.csv'
+    print("-"*100)
+    print("starting server")
+    print("-"*100)
+    print(locals())
+    for i in range(1,4):
+        start = time.time()
+        prefix = ngrams_dict.get(i)     
+        filepath = locals()[prefix+'grams']
+        print("Reading",prefix, "started")
+        globals()[prefix+'gram_mat'] = Matrix(filepath)
+        print("Time to read",prefix, time.time() - start)
+        start = time.time()
+        print("Computing",prefix, "started")
+        globals()[prefix+'gram_mat'] = pmi(globals()[prefix+'gram_mat'], positive=True, discounting=True)
+        print("Time to compute",prefix, time.time() - start)
 
 
 if __name__ == '__main__':
+    initServer()
     app.register_error_handler(Exception, app_error)
     app.run(host='localhost', port=8080, debug=True)
+    
 
 
 

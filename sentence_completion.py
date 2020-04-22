@@ -8,6 +8,7 @@ import csv
 import nltk
 import spacy
 import time
+import pandas as pd
 
 unigrams = 'dataset/unigrams.csv'
 bigrams = 'dataset/bigrams.csv'
@@ -15,26 +16,23 @@ trigrams = 'dataset/trigrams.csv'
 
 class Matrix:
     def __init__(self, filename):
+        #optimised
         self.filename = filename
-        self.mat = []       
-        file = open(filename,'r') 
-        reader = csv.reader(file)
-        try:
-            header = next(reader)
-            self.colnames = header[1: ]
-        except StopIteration:
-            pass
-        self.rownames = []
-        self.row_index = {}
-        index = 0
-        for line in reader:
-            self.row_index[line[0]] = index
-            index += 1
-            self.rownames.append(line[0])            
-            # self.mat.append(array(map(float, line[1: ])))
-            self.mat.append(np.asarray([float(val) for val in line[1:]]))
-            # self.mat.append(map(float, line[1: ]))
-        self.mat = np.asarray(self.mat)
+        self.mat = []     
+        self.row_index = {}  
+        dataframe = pd.read_csv(filename, chunksize = 10**8)
+        df_list = [] 
+        for df in dataframe: 
+            index = 0
+            for name in df[' ']:
+                self.row_index[name] = index
+                index += 1
+            df_list += [df.copy()] 
+        df_final = pd.concat(df_list)
+        self.rownames = df_final[' '].to_list()
+        dataframe = df_final.drop([' '], axis = 1)
+        self.mat = dataframe.to_numpy()
+        self.colnames = list(df.columns)
 
     def get_word_index(self, word):
         return self.row_index.get(word, -1)
@@ -153,15 +151,8 @@ def get_option_score(p, options, features, named_entities): #pmi score for optio
                 option_score += pmi              
     return option_score
 
-def predict_blank(ngram_type, questions, options, dependencies, parts_of_speech, keywords, named_entities):
-    cooccurrences = globals()[ngram_type+'s']
-    t = time.time()
-    m = Matrix(cooccurrences)
-    print("Load time for reading", ngram_type, time.time() - t)
-    p = pmi(m, positive=True, discounting=True)
-    return evaluate(p, ngram_type, questions, options, dependencies, parts_of_speech, keywords, named_entities)
 
-def evaluate(p, ngram_type, questions, options, dependencies, parts_of_speech, input_keywords, named_entities):
+def predict_blank(p, ngram_type, questions, options, dependencies, parts_of_speech, input_keywords, named_entities):
     guesses = []
     pmi_scores = []
     results = {}
@@ -286,7 +277,7 @@ def split_blanks(sentences, keywords_list):
 PUNCTUATION = (';', ':', ',', '.', '!', '?','(',')',"'", '~')
 unigram_scores = {}
 unigram_bigram_scores = {}
-def complete_sentences(sentences_to_fill, keywords_list, named_entities):
+def complete_sentences(sentences_to_fill, keywords_list, named_entities, unigram_mat, bigram_mat, trigram_mat):
     #sentences_to_fill is a list of strings
     #keywords_list is list of list of one string
     #named_entities is a dictionary
@@ -298,9 +289,9 @@ def complete_sentences(sentences_to_fill, keywords_list, named_entities):
     dependencies, parts_of_speech = generation(text_options)
     print(sentences_to_fill)
     print(keywords_list)
-    predict_blank('unigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords_list, named_entities)
-    predict_blank('bigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords_list, named_entities)
-    return predict_blank('trigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords_list, named_entities)
+    predict_blank(unigram_mat, 'unigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords, named_entities)
+    predict_blank(bigram_mat, 'bigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords, named_entities)
+    return predict_blank(trigram_mat, 'trigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords, named_entities)
 
 
 
