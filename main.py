@@ -18,10 +18,19 @@ import time
 
 app = Flask(__name__)  # static_url_path='', static_folder='static')
 cors = CORS(app)
+
 NAMED_ENTITY_TAGS = ['PERSON', 'NORP', 'FAC', 'ORG', 'GPE', 'LOC', 'PRODUCT', 'EVENT', 'WORK_OF_ART', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']
 unigram_mat = None
 bigram_mat = None
 trigram_mat = None
+dataset_sentences = []
+
+#change these if needed
+BLANK_STRING = '_' * 5
+unigrams = 'dataset/unigrams.csv'
+bigrams = 'dataset/bigrams-x.csv'
+trigrams = 'dataset/trigrams.csv'
+dataset = 'dataset/integrated.txt'
 
 @app.route('/health', methods=['GET']) #to check the API health
 def health():
@@ -49,7 +58,7 @@ def generate_letter():
         synonyms.append(get_synonyms(keywords_list))
 
     #search sentences from dataset
-    sentences = search_from_keywords(synonyms)
+    sentences = search_from_keywords(synonyms, dataset_sentences)
     num_of_sentences = len(sentences)
     print(sentences)
 
@@ -57,6 +66,7 @@ def generate_letter():
     for i in range(num_of_sentences):
         if sentences[i] == None:  
             sentences[i] = generate_text(keyphrases[i]) + "."
+    
     
     #replace named entity tags
     for index in range(len(sentences)):
@@ -67,8 +77,15 @@ def generate_letter():
         sentences[index] = keyword_processor.replace_keywords(sentence)
     
     #fill blanks using PMI
+    for keywords_list in keywords:
+        if not keywords_list:
+            keywords[keywords.index(keywords_list)] = [' ']
+            
     predicted_options = complete_sentences(sentences, keywords, named_entities, unigram_mat, bigram_mat, trigram_mat)
     print(predicted_options)
+    for option in list(predicted_options.keys()):
+        if predicted_options.get(option) == '':
+            predicted_options[option] = BLANK_STRING
     joined_sentences = ' '.join(sentences)
     for answer in list(predicted_options.values()):
         joined_sentences = re.sub('~', answer, joined_sentences, 1)
@@ -78,7 +95,8 @@ def generate_letter():
     _output['keywords'] = keywords
     _output['options'] = named_entities
     _output['synonyms'] = synonyms
-    _output['sentences'] = joined_sentences   
+    _output['sentences'] = joined_sentences  
+    print(_output)
     return json.dumps(_output), 200
 
 
@@ -99,30 +117,28 @@ def generate_text(input_keywords):
     return sentence
 
 def initServer():
-    global unigram_mat, bigram_mat, trigram_mat
-    # unigram_mat = None
-    # bigram_mat = N
+    global unigram_mat, bigram_mat, trigram_mat, dataset_sentences
     ngrams_dict = {
         1: 'uni', 2: 'bi', 3: 'tri'
     }
-    unigrams = 'dataset/unigrams.csv'
-    bigrams = 'dataset/bigrams.csv'
-    trigrams = 'dataset/trigrams.csv'
     print("-"*100)
     print("starting server")
     print("-"*100)
-    print(locals())
     for i in range(1,4):
         start = time.time()
         prefix = ngrams_dict.get(i)     
-        filepath = locals()[prefix+'grams']
-        print("Reading",prefix, "started")
+        filepath = globals()[prefix+'grams']
+        print("Reading",prefix + "grams", "started")
         globals()[prefix+'gram_mat'] = Matrix(filepath)
-        print("Time to read",prefix, time.time() - start)
+        print("Time to read",prefix + "grams", time.time() - start)
         start = time.time()
-        print("Computing",prefix, "started")
+        print("Computing",prefix + "grams", "started")
         globals()[prefix+'gram_mat'] = pmi(globals()[prefix+'gram_mat'], positive=True, discounting=True)
-        print("Time to compute",prefix, time.time() - start)
+        print("Time to compute",prefix + "grams", time.time() - start)
+
+    ipFile = open(dataset,'r', encoding='utf-8')
+    for line in ipFile.readlines():
+        dataset_sentences.extend(nltk.tokenize.sent_tokenize(line))
 
 
 if __name__ == '__main__':

@@ -30,6 +30,12 @@
       {
          var form = document.getElementById("mainForm");
          var input = form.userInput.value;
+         console.log("your message is"+input);
+         if(input == '' || input == ' ')
+         {
+            alert("Blank input");
+            return;
+         }
          var url = 'http://localhost:8080/letter';
          req_body = {message : input};
          // console.log(req_body);

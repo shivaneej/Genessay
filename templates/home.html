@@ -340,17 +340,24 @@
     <script type="text/javascript">
       async function submitForm() 
       {
-          console.log("start");
          var form = document.getElementById("mainForm");
          var input = form.userInput.value;
-         console.log(input);
+         var re = new RegExp("^([\\s*\\W*\\d*]*[a-zA-Z]+[\\s*\\W*\\d*]*)+$");
+         if(input == '' || !re.test(input))
+         {
+            alert("Invalid input");
+            return;
+         }
          var url = 'http://localhost:8080/letter';
          req_body = {message : input};
          console.log(req_body);
          const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)});
          const jsonobj = await def.json();
          console.log(jsonobj);
-         document.getElementById("output").innerHTML = jsonobj['sentences'];
+         outputString = jsonobj['sentences']
+         if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == '')
+            outputString = "Apologies! We couldn't generate the letter for you :(";
+         document.getElementById("output").innerHTML = outputString;
       }
    </script>
 </body>

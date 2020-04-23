@@ -21,18 +21,9 @@ class Entry(object):
       else:
         return self.ratio > other.ratio
 
-
-def read_dataset():
-    ipFile = open('dataset/integrated.txt','r', encoding='utf-8')
-    sentences = []
-    for line in ipFile.readlines():
-        sentences.extend(nltk.tokenize.sent_tokenize(line))
-    return sentences
-
-def search_from_keywords(synonyms_list):
+def search_from_keywords(synonyms_list, sentences):
     #synonyms_list is a list of dictionaries
     global keywords_rank 
-    sentences = read_dataset()
     final_result = []
     for synonyms_dict in synonyms_list:
         keywords_list = list(synonyms_dict.keys())
