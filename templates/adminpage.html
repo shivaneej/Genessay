@@ -119,7 +119,7 @@
       var file = input.files[0];
       var filename = file.name;
       if(!isValidFile(filename)){
-        alert("Please upload only txt files");s
+        show_alert("Please upload only .txt files", "warning");
         reset();
         return;
       }
