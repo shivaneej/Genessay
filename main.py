@@ -33,7 +33,7 @@ dataset_sentences = []
 #change these if needed
 BLANK_STRING = '_' * 5
 unigrams = 'dataset/unigrams.csv'
-bigrams = 'dataset/bigrams-x.csv'
+bigrams = 'dataset/bigrams.csv'
 trigrams = 'dataset/trigrams.csv'
 dataset = 'dataset/integrated.txt'
 
