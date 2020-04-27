@@ -28,7 +28,7 @@ dataset_sentences = []
 #change these if needed
 BLANK_STRING = '_' * 5
 unigrams = 'dataset/unigrams.csv'
-bigrams = 'dataset/bigrams.csv'
+bigrams = 'dataset/bigrams-x.csv'
 trigrams = 'dataset/trigrams.csv'
 dataset = 'dataset/integrated.txt'
 
@@ -71,7 +71,7 @@ def generate_letter():
     #replace named entity tags
     for index in range(len(sentences)):
         sentence = sentences[index]
-        keyword_processor = KeywordProcessor()
+        keyword_processor = KeywordProcessor(case_sensitive=True)
         keyword_dict = {'~' :  NAMED_ENTITY_TAGS}
         keyword_processor.add_keywords_from_dict(keyword_dict)
         sentences[index] = keyword_processor.replace_keywords(sentence)

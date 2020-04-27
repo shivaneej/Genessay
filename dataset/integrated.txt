@@ -416,7 +416,7 @@ Please assign a temporary teacher to my classes during my absence. I have alread
 In the case of an unforeseen situation that can cause changes in the joining date, I will let you know as soon as possible.
 
 I am PERSON, from (Project Name). I am pleased to inform you about my Maternity Leave Application. I would like to take my Maternity leave from DATE to DATE. I request you to grant me my Maternity Leave for DATE.
-In my absence, Karan Mehra will take responsibility for my work. You can contact me at any point of time without hesitating.
+In my absence, PERSON will take responsibility for my work. You can contact me at any point of time without hesitating.
 
 I, PERSON, Maths Teacher, have been teaching Maths subject from Class CARDINAL to CARDINAL for DATE. As per discussed with you regarding Maternity Leave for DATE, I would like to request you to grant me leave from DATE. My due date is near and the expected date is DATE. My doctor has recommended bed rest. I will join the school on DATE.
 Please allow a temporary teacher to my classes during my absenteeism. I have already completed PERCENT of the syllabus for all the classes and I will hand over the list of remaining topics to Head Mistress Madam before going on leave.
@@ -801,7 +801,7 @@ The interview was important and not to be delayed which, If cause admission prob
 It is stated that my daughter PERSON is doing internship in your well known institute on DATE, she was not well due to some health issues,so she could not attend the institute. It is requested that one day leave for DATE may please be granted,
 Yours 
 
-I am writing to apply for an internship with the State Public Defender system after completing my ORDINAL year at ORG. I have always wanted to be a criminal defense attorney and the ability to defend indigent adolescents and adults is especially appealing. I believe everyone deserves a vigorous defense and I would greatly benefit from a summer internship.
+I am writing to apply for an internship with ORG after completing my ORDINAL year at ORG. I have always wanted to be a criminal defense attorney and the ability to defend indigent adolescents and adults is especially appealing. I believe everyone deserves a vigorous defense and I would greatly benefit from a summer internship.
 My first two years of law school have helped me hone a keen understanding of how to think like a lawyer. I was selected to be on the Law Review as well as on a Moot Court team that placed nationally.
 My law school GPA is currently a CARDINAL, a difficult accomplishment in a rigorous program. While I know classroom abilities do not always translate into good litigation skills, my successes with moot court should be indicative. I believe in constitutional rights and protecting them.
 I would enjoy working as an intern in a public defender’s office. I would bring my best effort to represent every client. I have received practice approval under the Student Practices Act and I await your phone call.
@@ -1239,7 +1239,7 @@ This particular document is required for passport verification.
 I would like to apply for a bonafide certificate of this college stating that I am a student studying under this institution.
 This certificate is supposed to be submitted at ORG sports festival Fury to be held on DATE and DATE whereby I will be allowed to participate for the lawn tennis event.
 
-I, undersigned, Harsh Kumar Jhamb of semester ORDINAL, ORG need to apply for GPE visa so I request you to provide me with a bonafide certificate mentioning that I am a student of this institution for CARDINAL years which would be helpful for Visa purpose.
+I, undersigned, PERSON of semester ORDINAL, ORG need to apply for GPE visa so I request you to provide me with a bonafide certificate mentioning that I am a student of this institution for CARDINAL years which would be helpful for Visa purpose.
 I would be grateful to you for this.
 Thank you for your consideration.
 

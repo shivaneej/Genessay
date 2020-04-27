@@ -63,6 +63,6 @@ def updateMatrices(data_dir):
         saveMatrix(data_dir + '/' + OP_FILE_NAMES[i], matrixDict, uniqueNGrams)
 
 
-DATASET_FILENAME = '/test.txt'
+DATASET_FILENAME = '/og.txt'
 OP_FILE_NAMES = ['unigrams.csv', 'bigrams.csv', 'trigrams.csv']
 N = len(OP_FILE_NAMES)

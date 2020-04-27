@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap Simple Modal Login Modal Form</title>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+<script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+    body {
+		font-family: 'Varela Round', sans-serif;
+		background-image: url("/static/images/bg.jpg"); /* The image used */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; 
+	}
+	.modal-login .modal-content {
+    border-radius: 1px;
+    border: none;
+    width: 200%;
+    margin-left: -37%;
+}
+	.modal-login {
+		width: 320px;
+	}
+	.modal-login .modal-content {
+		border-radius: 1px;
+		border: none;
+	}
+	.modal-login .modal-header {
+        position: relative;
+		justify-content: center;
+        background: #f2f2f2;
+	}
+    .modal-login .modal-body {
+        padding: 30px;
+    }
+    .modal-login .modal-footer {
+        background: #f2f2f2;
+    }
+	.modal-login h4 {
+		text-align: center;
+		font-size: 26px;
+	}
+    .modal-login label {
+        font-weight: normal;
+        font-size: 13px;
+    }
+	.modal-login .form-control, .modal-login .btn {
+		min-height: 38px;
+		border-radius: 2px; 
+	}
+	.modal-login .hint-text {
+		text-align: center;
+	}
+	.modal-login .close {
+        position: absolute;
+		top: 15px;
+		right: 15px;
+	}
+    .modal-login .checkbox-inline {
+        margin-top: 12px;
+    }
+    .modal-login input[type="checkbox"]{
+        margin-top: 2px;
+    }
+	.modal-login .btn {
+        min-width: 100px;
+		background: #3498db;
+		border: none;
+		line-height: normal;
+	}
+	.modal-login .btn:hover, .modal-login .btn:focus {
+		background: #248bd0;
+	}
+	.modal-login .hint-text a {
+		color: #999;
+	}
+	.trigger-btn {
+		display: inline-block;
+		margin: 100px auto;
+	}
+</style>
+</head>
+<body>
+<div class="text-center">
+	<!-- Button HTML (to Trigger Modal) -->
+    <a href="#myModal" class="trigger-btn" data-toggle="modal"><button>Admin Login</button></a>
+    
+</div>
+
+<!-- Modal HTML -->
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">				
+					<h4 class="modal-title">Admin Login</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div id="errorMsg" style="color: red; margin: auto; text-align: center;"></div>				
+					<div class="form-group" >
+						<label>Email</label>
+						<input type="email" class="form-control"  id="adminEmail" required="required">
+					</div>
+					<div class="form-group">
+						<label>Password</label>
+                        <input type="password" class="form-control" required="required" id = "passwordBox" required="required">
+                        <p class="text"><input type="checkbox" onclick="showPassword();"> Show Password</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<label class=" pull-left"> *Only for admins</label>
+					<input type="button" class="btn btn-primary pull-right" value="Login" onclick="sendData();"/>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+<script src="./static/js/auth.js"></script>
+<script>
+	function sendData()
+	{
+		var email = document.getElementById("adminEmail");
+		var password = document.getElementById("passwordBox");         
+		var re = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}");
+		var errorMsg = document.getElementById("errorMsg");
+		if(!re.test(email.value) || email.value == '' || password.value == '')
+		{
+	        errorMsg.style.display = "block";
+			errorMsg.innerHTML="Invalid Input!";
+			if(password.value == '')
+				password.focus();
+			if(email.value == '' || !re.test(email.value))
+				email.focus();
+        	return;
+		}else
+		errorMsg.style.display = "none";
+		login(email.value, password.value);
+	}
+	function showPassword(){
+		var pwdBox = document.getElementById("passwordBox");
+		if(pwdBox.type === "password")	
+			pwdBox.type = "text";
+		else
+			pwdBox.type = "password";
+
+			
+	}
+</script>
+</body>
+</html>                                		                            
