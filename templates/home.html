@@ -5,13 +5,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Home</title>
+    <title>Genessay</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Place favicon.ico in the root directory -->
     <link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png">
-    <!-- <link rel="shortcut icon" type="image/ico" href="/static/images/favicon.ico" /> -->
+    <link rel="shortcut icon" type="image/ico" href="{{url_for('static', filename = 'favicon.ico')}}" />
 
     <!-- Plugin-CSS -->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
@@ -25,9 +25,43 @@
     <link rel="stylesheet" href="/static/css/theme.css">
     <link rel="stylesheet" href="/static/css/overright.css">
     <link rel="stylesheet" href="/static/css/normalize.css">
-    <!-- <link rel="stylesheet" href="/static/css/style.css"> -->
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/responsive.css">
     <script src="/static/js/vendor/modernizr-2.8.3.min.js"></script>
+
+
+
+
+
+    <style>
+        .modal-header {
+        /* position: relative; */
+		justify-content: center;
+        /* background: #f2f2f2; */
+        color: #fff;
+        background: linear-gradient(to right, #00c9fd 0%, #81ee8e 100%);
+        background: #50d1c0;
+        
+    }
+     .close {
+        position: absolute;
+		top: 15px;
+		right: 15px;
+    }
+    .modal-title{
+        text-align: center;
+    }
+    .navbar-btn {
+        background-color: transparent;
+        border: none;
+        color: white;
+
+    }
+    .navbar-btn:hover, .navbar-btn:visited, .navbar-btn:focus{
+        color: white;
+    }
+    
+    </style>
 </head>
 
 <body data-spy="scroll" data-target="#mainmenu" data-offset="50">
@@ -44,7 +78,7 @@
         <div class="section-bg overlay-bg dewo ripple"></div>
         <!--Mainmenu-->
         <nav class="navbar navbar-default mainmenu-area navbar-fixed-top" data-spy="affix" data-offset-top="60">
-            <div class="container">
+            <div class="container blue-bg">
                 <div class="navbar-header">
                     <button type="button" data-toggle="collapse" class="navbar-toggle" data-target="#mainmenu">
                         <span class="icon-bar"></span>
@@ -53,7 +87,7 @@
                     </button>
                     <a href="#" class="navbar-brand">
                         <!--<img src="images/logo.png" alt="">-->
-                        <h2 class="text-white logo-text">*NAME*</h2>
+                        <h2 class="text-white logo-text">Genessay</h2>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse navbar-right" id="mainmenu">
@@ -62,10 +96,7 @@
                         <li><a href="#about">About</a></li>
                         <li><a href="#howtouse">How to use</a></li>
                         <li><a href="#getstarted">Get started</a></li>
-                        <!-- <li><a href="#client">Client</a></li>
-                        <li><a href="#price">Pricing</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#contact">Contact</a></li> -->
+                        <li><button type="button" class="btn btn-sucess navbar-btn" data-toggle="modal" data-target="#loginModal">Admin Login</button></li>
                     </ul>
                 </div>
             </div>
@@ -81,71 +112,59 @@
                    <!--  <div class="home_screen_slide_main">
                         <div class="home_text_slide"> -->
                             <div class="item">
-                                <h1>It’s all about <br />Promoting your Business</h1>
+                                <h1>Start composing general application letters with ease!</h1>
                                 <div class="space-10"></div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in </p>
-                                <div class="space-50"></div>
                                 <a href="#getstarted" class="big-button">Get Started</a>
                             </div>
-                            <!-- <div class="item">
-                                <h1>It’s all about <br />Promoting your Business</h1>
-                                <div class="space-10"></div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in </p>
-                                <div class="space-50"></div>
-                                <a href="https://www.youtube.com/watch?v=iaj8ktgL3BY" class="btn btn-icon video-popup"><span class="ti-control-play"></span>Watch Video</a>
-                            </div>
-                            <div class="item">
-                                <h1>It’s all about <br />Promoting your Business</h1>
-                                <div class="space-10"></div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in </p>
-                                <div class="space-50"></div>
-                                <a href="https://www.youtube.com/watch?v=iaj8ktgL3BY" class="btn btn-icon video-popup"><span class="ti-control-play"></span>Watch Video</a>
-                            </div>
-                            <div class="item">
-                                <h1>It’s all about <br />Promoting your Business</h1>
-                                <div class="space-10"></div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in </p>
-                                <div class="space-50"></div>
-                                <a href="https://www.youtube.com/watch?v=iaj8ktgL3BY" class="btn btn-icon video-popup"><span class="ti-control-play"></span>Watch Video</a>
-                            </div>
-                            <div class="item">
-                                <h1>It’s all about <br />Promoting your Business</h1>
-                                <div class="space-10"></div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in </p>
-                                <div class="space-50"></div>
-                                <a href="https://www.youtube.com/watch?v=iaj8ktgL3BY" class="btn btn-icon video-popup"><span class="ti-control-play"></span>Watch Video</a>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
-               <!--  <div class="hidden-xs hidden-sm col-md-4">
-                    <div class="home_screen_slide">
-                        <div class="single_screen_slide wow fadeInRight">
-                            <div class="item"><img src="images/screen/screen1.jpg" alt=""></div>
-                            <div class="item"><img src="images/screen/screen2.jpg" alt=""></div>
-                            <div class="item"><img src="images/screen/screen3.jpg" alt=""></div>
-                            <div class="item"><img src="images/screen/screen4.jpg" alt=""></div>
-                            <div class="item"><img src="images/screen/screen5.jpg" alt=""></div>
-                        </div>
-                    </div>
-                    <div class="home_screen_nav">
-                        <span class="ti-angle-left testi_prev"></span>
-                        <span class="ti-angle-right testi_next"></span>
-                    </div>
-                </div> -->
             </div>
             <div class="space-80"></div>
         </div>
         <!--Header-Text/-->
     </header>
     <!--Header-Area/-->
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="loginModalLabel">Admin Login</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+                <div id="errorMsg" style="color: red; margin: auto; text-align: center; display: none;"></div>				
+                <div class="form-group" >
+                    <label>Email</label>
+                    <input type="email" class="form-control"  id="adminEmail" required="required">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" required="required" id = "passwordBox" required="required">
+                    <p class="text"><input type="checkbox" onclick="showPassword();"> Show Password</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-primary btn-link no-round text-uppercase" value="Login" onclick="sendData();"/>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Modal ends -->
+
     <section id="about">
         <div class="space-80"></div>
         <div class="container">
             <div class="row wow fadeInUp">
                 <div class="col-xs-12 col-md-6 col-md-offset-3 text-center">
                     <h3 class="text-uppercase">About</h3>
-                    <p>Lorem ipsum madolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor coli incididunt ut labore Lorem ipsum madolor sit amet.</p>
+                    <p>Every article or formal letter consists of key points. While writing an article, the writer formulates the key points in his/her head and forms the article around those key points. Genessay, a text completion software, will assist the user in this process by taking the title and the key points of the article as its input and formulate the article based on the key points using Natural Language Processing and Information Retrieval from external sources. This will also be implemented for generating application letters using machine learning algorithms. An additional feature for optimizing the text will improve the entered content by using better vocabulary and correcting grammatical errors. Genessay should guarantee accuracy better than the existing system and should work as a cross-platform software.</p>
                 </div>
             </div>
             <div class="space-60"></div>
@@ -160,71 +179,9 @@
         </div>
     </section>
     <!--Work-Section-->
-    <section class="gray-bg" id="howtouse">
-        <div class="space-80"></div>
-        <div class="container">
-            <div class="row wow fadeInUp">
-                <div class="col-xs-12 col-md-6 col-md-offset-3 text-center">
-                    <h3 class="text-uppercase">How it work?</h3>
-                    <p>Lorem ipsum madolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor coli incididunt ut labore Lorem ipsum madolor sit amet.</p>
-                </div>
-            </div>
-            <div class="space-60"></div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-3 text-center wow fadeInUp" data-wow-delay="0.2s">
-                    <div class="hover-shadow">
-                        <div class="space-60">
-                            <!-- <img src="/static/images/icon/icon1.png" alt=""> -->
-                        </div>
-                        <div class="space-20"></div>
-                        <h5 class="text-uppercase">Step 1</h5>
-                        <p>Lorem ipsum dolor sit ameteped consecteadop adipisicing elitab sed eiusmod temporara incident</p>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-3 text-center wow fadeInUp" data-wow-delay="0.4s">
-                    <div class="hover-shadow">
-                        <div class="space-60">
-                            <!-- <img src="/static/images/icon/icon2.png" alt=""> -->
-                        </div>
-                        <div class="space-20"></div>
-                        <h5 class="text-uppercase">Step 2</h5>
-                        <p>Lorem ipsum dolor sit ameteped consecteadop adipisicing elitab sed eiusmod temporara incident</p>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-3 text-center wow fadeInUp" data-wow-delay="0.6s">
-                    <div class="hover-shadow">
-                        <div class="space-60">
-                            <!-- <img src="/static/images/icon/icon3.png" alt=""> -->
-                        </div>
-                        <div class="space-20"></div>
-                        <h5 class="text-uppercase">Step 3</h5>
-                        <p>Lorem ipsum dolor sit ameteped consecteadop adipisicing elitab sed eiusmod temporara incident</p>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-3 text-center wow fadeInUp" data-wow-delay="0.8s">
-                    <div class="hover-shadow">
-                        <div class="space-60">
-                            <!-- <img src="/static/images/icon/icon4.png" alt=""> -->
-                        </div>
-                        <div class="space-20"></div>
-                        <h5 class="text-uppercase">Step 4</h5>
-                        <p>Lorem ipsum dolor sit ameteped consecteadop adipisicing elitab sed eiusmod temporara incident</p>
-                    </div>
-                </div>
-            </div>
-            <div class="space-60"></div>
-            <div class="row">
-                <div class="col-xs-12 col-md-8 col-md-offset-2 text-center wow fadeInUp">
-                    <div class="down-offset ">
-                        <!-- <img src="/static/images/mobile1.png" alt=""> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!--Work-Section/-->
     <!--Video-Section-->
-    <section class="section-video relative fix">
+    <section class="section-video relative fix" id="howtouse">
         <div class="section-bg overlay-bg alpha">
         </div>
         <video class="ivideo" id="cvideo">
@@ -241,11 +198,7 @@
     <section id="getstarted">
     </section>
     <!--Screenshot-Section/-->
-    <!--instagram section/-->
-    <!--Map-->
-    <!-- <div id="contact"></div> -->
-    <!-- <div id="maps"></div> -->
-    <!--Map/-->
+    
     <!--Footer-area-->
     <footer class="black-bg">
         <div class="container">
@@ -260,7 +213,7 @@
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <label for="form-message" class="sr-only">comment</label>
-                                            <textarea class="form-control" rows="6" id="form-message" placeholder="Enter keywords or keyphrases" name="userInput" required></textarea>
+                                            <textarea class="form-control" rows="10" id="form-message" placeholder="Enter keywords or keyphrases" name="userInput" required></textarea>
                                         </div>
                                         <div class="space-10"></div>
                                         <!-- <button class="btn btn-link no-round text-uppercase" type="submit" onclick="submitForm()"> Generate</button> -->
@@ -279,31 +232,17 @@
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <label for="form-message" class="sr-only">comment</label>
-                                            <textarea class="form-control" rows="6" name="form-message" placeholder="" id="output"></textarea>
+                                            <textarea class="form-control" rows="10" name="form-message" placeholder="" id="output"></textarea>
                                         </div>
                                         <div class="space-10"></div>
-                                        <button class="btn btn-link no-round text-uppercase" type="submit">Download</button>
+                                        <button class="btn btn-link no-round text-uppercase" type="submit" style="opacity: 0;">Download</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
             </div>
             <div class="space-80"></div>
-            <!-- <div class="row text-white wow fadeInUp">
-                <div class="col-xs-12 col-md-6 col-md-offset-3">
-                    <h3 class="text-uppercase text-center">SubscribE OUR NEWSLETTER</h3>
-                    <div class="space-15"></div>
-                    <form id="mc-form" class="subscrie-form">
-                        <label class="mt10" for="mc-email"></label>
-                        <div class="input-group">
-                            <input type="email" class="form-control" id="mc-email" placeholder="Your email address here...">
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-info">Subscribe</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div> -->
+            
             <div class="space-80"></div>
             <div class="row text-white wow fadeIn">
                 <div class="col-xs-12 text-center">
@@ -314,7 +253,7 @@
                         <a href="#"><span class="ti-pinterest-alt"></span></a>
                     </div>
                     <div class="space-20"></div>
-                    <!-- <p>@ 2017 <a href="https://themeforest.net/user/themectg">ThemeCTG</a> all right resurved. Designed by <a href="https://themeforest.net/user/quomodotheme">Quomodotheme</a></p> -->
+                   
                 </div>
             </div>
             <div class="space-20"></div>
@@ -323,22 +262,41 @@
     <!--Footer-area-->
 
     <!--Vendor JS-->
-    <script src="/static/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="/static/js/vendor/bootstrap.min.js"></script>
-    <!--Plugin JS-->
-    <script src="/static/js/owl.carousel.min.js"></script>
-    <script src="/static/js/scrollUp.min.js"></script>
-    <script src="/static/js/magnific-popup.min.js"></script>
-    <script src="/static/js/ripples-min.js"></script>
-   <!--  <script src="js/contact-form.js"></script> -->
-    <script src="/static/js/spectragram.min.js"></script>
-    <script src="/static/js/ajaxchimp.js"></script>
-    <script src="/static/js/wow.min.js"></script>
-    <script src="/static/js/plugins.js"></script>
-    <!--Active JS-->
-    <script src="/static/js/main.js"></script>
-    <script type="text/javascript">
-      async function submitForm() 
+    <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+<script src="./static/js/auth.js"></script>
+<script>
+	function sendData()
+	{
+		var email = document.getElementById("adminEmail");
+		var password = document.getElementById("passwordBox");         
+		var re = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}");
+		var errorMsg = document.getElementById("errorMsg");
+		if(!re.test(email.value) || email.value == '' || password.value == '')
+		{
+	        errorMsg.style.display = "block";
+			errorMsg.innerHTML="Invalid Input!";
+			if(password.value == '')
+				password.focus();
+			if(email.value == '' || !re.test(email.value))
+				email.focus();
+        	return;
+		}else
+		errorMsg.style.display = "none";
+		login(email.value, password.value);
+	}
+	function showPassword(){
+		var pwdBox = document.getElementById("passwordBox");
+		if(pwdBox.type === "password")	
+			pwdBox.type = "text";
+		else
+			pwdBox.type = "password";
+
+			
+    }
+
+    async function submitForm() 
       {
          var form = document.getElementById("mainForm");
          var input = form.userInput.value;
@@ -355,11 +313,29 @@
          const jsonobj = await def.json();
          console.log(jsonobj);
          outputString = jsonobj['sentences']
-         if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == '')
-            outputString = "Apologies! We couldn't generate the letter for you :(";
+         if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == ''){
+            outputString = '';
+            alert("Apologies! We couldn't generate the letter for you :("); 
+         }
+         console.log(outputString);
          document.getElementById("output").innerHTML = outputString;
       }
-   </script>
+    </script>
+    <script src="/static/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/static/js/vendor/bootstrap.min.js"></script>
+    <!--Plugin JS-->
+    <script src="/static/js/owl.carousel.min.js"></script>
+    <script src="/static/js/scrollUp.min.js"></script>
+    <script src="/static/js/magnific-popup.min.js"></script>
+    <script src="/static/js/ripples-min.js"></script>
+   <!--  <script src="js/contact-form.js"></script> -->
+    <script src="/static/js/spectragram.min.js"></script>
+    <script src="/static/js/ajaxchimp.js"></script>
+    <script src="/static/js/wow.min.js"></script>
+    <script src="/static/js/plugins.js"></script>
+    <!--Active JS-->
+    <script src="/static/js/main.js"></script>
+    
 </body>
 
 </html>

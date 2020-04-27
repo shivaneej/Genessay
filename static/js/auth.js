@@ -1,3 +1,4 @@
+
 var firebaseConfig = {
     apiKey: "AIzaSyB5AqrECrbHCpj5rwRljxOdwnRk4mA2o70",
     authDomain: "congensys.firebaseapp.com",
@@ -15,7 +16,7 @@ var firebaseConfig = {
   function login(email, password){
 
 	firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
-		alert("logged in");
+		alert("Logged in");
 		var user = firebase.auth().currentUser;
 		console.log(user);
 		window.location = '/admin';
@@ -23,7 +24,7 @@ var firebaseConfig = {
 			var errorCode = error.code;
 		  var errorMessage = error.message;
 		  if (errorCode === 'auth/wrong-password') {
-			  alert('Wrong password.');
+			  alert('Invalid credentials!');
 		  } else {
 			  alert(errorMessage);
 		  }

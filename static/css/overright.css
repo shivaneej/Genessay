@@ -1,103 +1,181 @@
-.navbar-default {
-    background: none;
-    border: none;
+/*!normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css*/
+html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
 }
 
-.media-body {
-    width: auto;
+body {
+    margin: 0
 }
 
-.owl-carousel .owl-item img {
-    width: auto;
-    max-width: 100%;
+article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary {
+    display: block
 }
 
-.well {
-    background-color: #ffffff;
-    border: medium none;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    border-radius: 2px;
+audio,canvas,progress,video {
+    display: inline-block;
+    vertical-align: baseline
 }
 
-.well.well-hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0);
-    -webkit-transform: translateY(0px);
-    transform: translateY(0px);
-    -webkit-transition: all 0.3s ease 0s;
-    transition: all 0.3s ease 0s;
+audio:not([controls]) {
+    display: none;
+    height: 0
 }
 
-.well.well-hover:hover {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-    -webkit-transform: translateY(-5px);
-    transform: translateY(-5px);
+[hidden],template {
+    display: none
 }
 
-.media-right,
-.media > .pull-right {
-    padding-left: 20px;
+a {
+    background-color: transparent
 }
 
-.media-left,
-.media > .pull-left {
-    padding-right: 20px;
+a:active,a:hover {
+    outline: 0
 }
 
-.panel-default {
-    border: medium none;
-    box-shadow: 2px 2px 7px -2px #dddddd;
-    margin-bottom: 20px !important;
-    padding: 5px;
+abbr[title] {
+    border-bottom: 1px dotted
 }
 
-.panel-default > .panel-heading {
-    background-color: transparent;
-    border-color: transparent;
+b,strong {
+    font-weight: 700
 }
 
-.panel-default > .panel-heading + .panel-collapse > .panel-body {
-    border-top-color: transparent;
+dfn {
+    font-style: italic
 }
 
-.panel {
-    border: medium none;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+h1 {
+    font-size: 2em;
+    margin: .67em 0
 }
 
-.well.well-lg {
-    padding: 50px;
+mark {
+    background: #ff0;
+    color: #000
 }
 
-.form-control {
-    border-radius: 2px;
-    margin-bottom: 20px;
-    min-height: 40px;
+small {
+    font-size: 80%
 }
 
-.navbar {
-    margin-bottom: 0;
+sub,sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline
 }
 
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:focus,
-.navbar-default .navbar-nav > .active > a:hover {
-    background: none;
+sup {
+    top: -.5em
 }
 
-.panel-title a {
-    display: block;
+sub {
+    bottom: -.25em
 }
 
-.breadcrumb {
-    background: none;
+img {
+    border: 0
 }
 
-blockquote {
-    font-size: 15px;
-    padding: 30px;
+svg:not(:root) {
+    overflow: hidden
 }
 
-.input-group-btn .btn {
-    height: 40px;
+figure {
+    margin: 1em 40px
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0
+}
+
+pre {
+    overflow: auto
+}
+
+code,kbd,pre,samp {
+    font-family: monospace,monospace;
+    font-size: 1em
+}
+
+button,input,optgroup,select,textarea {
+    color: inherit;
+    font: inherit;
+    margin: 0
+}
+
+button {
+    overflow: visible
+}
+
+button,select {
+    text-transform: none
+}
+
+button,html input[type=button],input[type=reset],input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer
+}
+
+button[disabled],html input[disabled] {
+    cursor: default
+}
+
+button::-moz-focus-inner,input::-moz-focus-inner {
+    border: 0;
+    padding: 0
+}
+
+input {
+    line-height: normal
+}
+
+input[type=checkbox],input[type=radio] {
+    box-sizing: border-box;
+    padding: 0
+}
+
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button {
+    height: auto
+}
+
+input[type=search] {
+    -webkit-appearance: textfield;
+    box-sizing: content-box
+}
+
+input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration {
+    -webkit-appearance: none
+}
+
+fieldset {
+    border: 1px solid silver;
+    margin: 0 2px;
+    padding: .35em .625em .75em
+}
+
+legend {
+    border: 0;
+    padding: 0
+}
+
+textarea {
+    overflow: auto
+}
+
+optgroup {
+    font-weight: 700
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+td,th {
+    padding: 0
 }

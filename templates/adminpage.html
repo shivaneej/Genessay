@@ -1,0 +1,197 @@
+<!doctype html lang = "en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Genessay</title>
+  <meta name="description" content="">
+  <!-- Place favicon.ico in the root directory -->
+  <link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png">
+  <link rel="shortcut icon" type="image/ico" href="{{url_for('static', filename = 'favicon.ico')}}" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>  
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script>
+    window.onload = function(){
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          alert("Login to continue");
+          window.location = '/';
+        }
+        else{
+          document.getElementById("body").style.display = "block";
+        } 
+      });
+    }
+  </script>
+</head>
+<body id="body" style="display: none;">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3 mt-3">
+          <h2 class="mb-3" style="font-weight: 300">Upload File</h2>
+          <div class="form-group mb-3">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" name="file_input" id="file_input" oninput="input_filename();">
+              <label id="file_input_label" class="custom-file-label" for="image">Select file</label>
+            </div>
+          </div>
+
+          <button onclick="upload();" id="upload_btn" class="btn btn-primary">Upload</button>
+
+          <button class="btn btn-primary d-none" id="loading_btn" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Uploading...
+          </button>
+
+          <button type="button" id="cancel_btn" class="btn btn-secondary d-none">Cancel upload</button>
+
+        </div>
+
+        <div id="progress_wrapper" class="d-none">
+          <label id="progress_status"></label>
+          <div class="progress mb-3">
+            <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+
+        <div id="alert_wrapper"></div>
+
+        <input type="button" value="Signout" onclick="logout()">
+
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    var progress = document.getElementById("progress");
+    var progress_wrapper = document.getElementById("progress_wrapper");
+    var progress_status = document.getElementById("progress_status");
+
+    var upload_btn = document.getElementById("upload_btn");
+    var loading_btn = document.getElementById("loading_btn");
+    var cancel_btn = document.getElementById("cancel_btn");
+
+
+    var alert_wrapper = document.getElementById("alert_wrapper");
+
+    var input = document.getElementById("file_input");
+    var file_input_label = document.getElementById("file_input_label");
+
+    function show_alert(message, alert) {
+      alert_wrapper.innerHTML = `
+        <div id="alert" class="alert alert-${alert} alert-dismissible fade show" role="alert">
+          <span>${message}</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      `
+    }
+
+    function isValidFile(filename) {
+      var parts = filename.split('.');
+      var ext = parts[parts.length - 1];
+      switch (ext.toLowerCase()) {
+        case 'txt':
+          return true;
+      }
+      return false;
+    }
+
+    function update(){
+      var url = 'http://localhost:8080/update'
+      fetch(url).catch((err) => console.log(err));
+    }
+
+    function upload(url) {
+      if (!input.value) {
+        show_alert("No file selected", "warning")
+        return;
+      }
+
+      var file = input.files[0];
+      var filename = file.name;
+      if(!isValidFile(filename)){
+        alert("Please upload only txt files");s
+        reset();
+        return;
+      }
+
+      var data = new FormData();
+      var request = new XMLHttpRequest();
+      alert_wrapper.innerHTML = "";
+      input.disabled = true;
+      upload_btn.classList.add("d-none");
+      loading_btn.classList.remove("d-none");
+      cancel_btn.classList.remove("d-none");
+      progress_wrapper.classList.remove("d-none");
+      
+     
+
+      var filesize = file.size;
+      document.cookie = `filesize=${filesize}`;
+      data.append("file", file);
+      request.upload.addEventListener("progress", function (e) {
+        var loaded = e.loaded;
+        var total = e.total
+        var percent_complete = (loaded / total) * 100;
+        progress.setAttribute("style", `width: ${Math.floor(percent_complete)}%`);
+        progress_status.innerText = `${Math.floor(percent_complete)}% uploaded`;
+      })
+      request.addEventListener("load", function (e){
+        if (request.status == 200) {
+          show_alert(`File Uploaded`, "success");
+          update()
+        }
+        else {
+          show_alert(request.status, "danger");
+        }
+        reset();
+      });
+      // request error handler
+      request.addEventListener("error", function (e) {
+        reset();
+        show_alert(`Error uploading file`, "warning");
+      });
+      // request abort handler
+      request.addEventListener("abort", function (e) {
+        reset();
+        show_alert(`Upload cancelled`, "primary");
+      });
+      // Open and send the request
+      var url = 'http://localhost:8080/uploader';
+      request.open("post", url);
+      request.send(data);
+      cancel_btn.addEventListener("click", function () {
+        request.abort();
+      })
+    }
+
+    // Function to update the input placeholder
+    function input_filename() {
+      file_input_label.innerText = input.files[0].name;
+    }
+
+    // Function to reset the page
+    function reset() {
+      input.value = null;
+      cancel_btn.classList.add("d-none");
+      input.disabled = false;
+      upload_btn.classList.remove("d-none");
+      loading_btn.classList.add("d-none");
+      progress_wrapper.classList.add("d-none");
+      progress.setAttribute("style", `width: 0%`);
+      file_input_label.innerText = "Select file";
+    }
+  </script>
+
+</body>
+
+</html>

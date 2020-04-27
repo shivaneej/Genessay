@@ -14,10 +14,15 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import os
 from model import load
 import time
-# from sample import generate_text
+from matrixGen import updateMatrices
 
 app = Flask(__name__)  # static_url_path='', static_folder='static')
 cors = CORS(app)
+
+UPLOAD_FOLDER = './dataset'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = set(['txt'])
+DATASET_FILE_NAME = '/og.txt'
 
 NAMED_ENTITY_TAGS = ['PERSON', 'NORP', 'FAC', 'ORG', 'GPE', 'LOC', 'PRODUCT', 'EVENT', 'WORK_OF_ART', 'LAW', 'LANGUAGE', 'DATE', 'TIME', 'PERCENT', 'MONEY', 'QUANTITY', 'ORDINAL', 'CARDINAL']
 unigram_mat = None
@@ -32,16 +37,18 @@ bigrams = 'dataset/bigrams-x.csv'
 trigrams = 'dataset/trigrams.csv'
 dataset = 'dataset/integrated.txt'
 
-@app.route('/health', methods=['GET']) #to check the API health
-def health():
-    _response = Response("API Up & Running!")
-    _response.headers["Access-Control-Allow-Origin"] = "*"
-    return _response, 200
+
+def allowed_file(filename):
+   return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @app.route('/') #render main html page
 def render():
     return render_template('home.html')
+
+@app.route('/admin')
+def admin_page():
+   return render_template('adminpage.html')
 
 @app.route('/letter', methods=['POST']) #process user input
 def generate_letter():
@@ -139,6 +146,35 @@ def initServer():
     ipFile = open(dataset,'r', encoding='utf-8')
     for line in ipFile.readlines():
         dataset_sentences.extend(nltk.tokenize.sent_tokenize(line))
+
+@app.route('/uploader', methods = ['POST'])
+def upload_file():
+   if request.method == 'POST':  
+      uploaded_file = request.files['file']
+      if uploaded_file and allowed_file(uploaded_file.filename):
+         dataset_file = open(UPLOAD_FOLDER + DATASET_FILE_NAME, 'r')
+         file_contents = uploaded_file.read().decode("utf-8")
+         file_contents = file_contents.replace('\r', ' ')
+         new_samples = [content.strip() for content in file_contents.split('\n \n') if content]
+         old_samples = [content for content in dataset_file.read().split('\n\n') if content]
+         print(new_samples)
+         total_samples = new_samples + old_samples
+         total_samples = [content.strip() for content in total_samples if content]
+         unique_samples = set(total_samples)
+         unique_samples_list = list(unique_samples)
+         with open(UPLOAD_FOLDER + DATASET_FILE_NAME, 'w') as overwritten_file:
+            for sample in unique_samples_list:
+               overwritten_file.write("%s\n\n" % sample)
+         print("File Uploaded successfully")
+         return 'file uploaded successfully', 200
+      else:
+         return 'not a valid file type', 422
+
+@app.route('/update', methods=['GET'])
+def update():
+    updateMatrices(UPLOAD_FOLDER)
+    return "", 200
+   
 
 
 if __name__ == '__main__':

@@ -51,7 +51,7 @@ def wordContext(listNGrams, uniqueNGrams, matrixDict):
 def updateMatrices(data_dir):
     DATASET_FILE = data_dir + DATASET_FILENAME
     for i in range(N):
-        sample_file = open(DATASET_FILE, 'r', encoding='utf-8')
+        sample_file = open(DATASET_FILE, 'r')
         data = sample_file.read()
         samples = list(data.split("\n\n"))
         matrixDict = {}
@@ -64,5 +64,5 @@ def updateMatrices(data_dir):
 
 
 DATASET_FILENAME = '/og.txt'
-OP_FILE_NAMES = ['unigrams.csv', 'bigrams.csv', 'trigrams.csv']
+OP_FILE_NAMES = ['unigrams_a.csv', 'bigrams_a.csv', 'trigrams_a.csv']
 N = len(OP_FILE_NAMES)
