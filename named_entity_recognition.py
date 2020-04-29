@@ -2,13 +2,18 @@ import spacy
 import re
 nlp = spacy.load("en_core_web_sm")
 
-def extract_named_entities(_input):
-    named_entities = {}
-    text_input = nlp(_input)
-    for ent in text_input.ents:
-        named_entities[ent.text.strip()] = ent.label_
-    named_entities.update(extract_numerical_entities(_input))
-    return named_entities
+def extract_named_entities(list_of_phrases):
+    seperated_entities = []
+    all_entities = {}
+    for phrase in list_of_phrases:
+        local_dict = {}
+        text_input = nlp(phrase)
+        for ent in text_input.ents:
+            local_dict[ent.text.strip()] = ent.label_
+            local_dict.update(extract_numerical_entities(phrase))
+        all_entities.update(local_dict)
+        seperated_entities.append(local_dict)
+    return all_entities, seperated_entities
 
 def extract_numerical_entities(_input):
     numerical_entities = {}

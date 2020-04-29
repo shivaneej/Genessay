@@ -2,6 +2,7 @@ from gingerit.gingerit import GingerIt
 
 def correctGrammar(sentence):
 	parser = GingerIt()
-	corrected_sent = parser.parse(sentence).get('result')
+	result = parser.parse(sentence)
+	corrected_sent = result.get('result')
 	return corrected_sent
 

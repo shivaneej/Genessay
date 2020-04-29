@@ -265,7 +265,7 @@ def split_blanks(sentences, keywords_list):
         sentence = sentences[i]
         keywords = keywords_list[i]
         if(sentence[0] == "~"):
-            sentence = " " + sent
+            sentence = " " + sentence
         splitted_list = sentence.split("~")
         count = len(splitted_list)
         for j in range(count):

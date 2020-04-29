@@ -35,9 +35,10 @@ dataset_sentences = []
 #change these if needed
 BLANK_STRING = '_' * 5
 unigrams = 'dataset/unigrams.csv'
-bigrams = 'dataset/bigrams.csv'
+bigrams = 'dataset/bigrams-x.csv'
 trigrams = 'dataset/trigrams.csv'
 dataset = 'dataset/integrated.txt'
+
 
 
 def allowed_file(filename):
@@ -57,11 +58,14 @@ def generate_letter():
     _input = request.get_json().get('message') #string
     keyphrases = nltk.sent_tokenize(_input) #list of strings
     print(keyphrases)
-    named_entities = extract_named_entities(_input) 
-    #keywords extraction
-    keywords = keywordExtraction(keyphrases, ['NOUN','VERB','NUM'], 4, True)
+    named_entities, phrase_entities = extract_named_entities(keyphrases) 
 
-    #synonyms extraction
+    #keywords extraction
+    keywords = keywordExtraction(keyphrases, ['NOUN','VERB','NUM'], 8, True)
+    for index in range(len(keywords)):
+        keywords[index].extend(list(phrase_entities[index].values()))
+
+    #synonyms extraction 
     synonyms = []
     for keywords_list in keywords:
         synonyms.append(get_synonyms(keywords_list))
@@ -75,8 +79,7 @@ def generate_letter():
     for i in range(num_of_sentences):
         if sentences[i] == None:  
             sentences[i] = generate_text(keyphrases[i]) + "."
-    
-    
+        
     #replace named entity tags
     for index in range(len(sentences)):
         sentence = sentences[index]
@@ -104,10 +107,6 @@ def generate_letter():
     #return output
     _output = {}
     _output = {'keywords': keywords, 'options': named_entities, 'synonyms': synonyms, 'sentences': joined_sentences} 
-    # _output['keywords'] = keywords
-    # _output['options'] = named_entities
-    # _output['synonyms'] = synonyms
-    # _output['sentences'] = joined_sentences  
     print(_output)
     return json.dumps(_output), 200
 
@@ -122,7 +121,7 @@ def generate_text(input_keywords):
     parser.add_argument('--seed', type = str, default= input_keywords,help = 'seed string for sampling')
     parser.add_argument('--length', type = int, default = int(1.5*len(input_keywords)) ,help = 'length of the sample to generate') #change the '8' to change number of words
     parser.add_argument('--diversity', type = float, default = 0.01, help = 'Sampling diversity')
-    args = parser.parse_args()
+    args, unknown = parser.parse_known_args()
     model = load(args.data_dir)
     del args.data_dir
     sentence = model.sample(**vars(args))
@@ -180,7 +179,8 @@ def update():
     updateMatrices(UPLOAD_FOLDER)
     return "", 200
    
-
+#comment when not in debug mode
+# initServer() 
 
 if __name__ == '__main__':
     initServer()
