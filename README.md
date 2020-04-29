@@ -1,6 +1,6 @@
 <div align="center">
 	<h1>Genessay :page_with_curl:</h1>
-    <img src="static/icons/logo.png" height="75" >
+    <img src="static/icons/logo.png">
     <p>Compose application letters with ease!</p>
     <br>
 </div>
