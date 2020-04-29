@@ -10,7 +10,6 @@ click==7.1.1
 colorama==0.4.3
 cymem==2.0.3
 distlib==0.3.0
-en-core-web-sm==2.2.5
 filelock==3.0.12
 flashtext==2.7
 Flask==1.1.1
