@@ -16,7 +16,7 @@ Genessay uses various Natural Language Processing (NLP) methods and Recurrent Ne
 
 ## How to run
 1. Clone the repository <br>
-`git clone https://github.com/shivaneej/Content-Generation-Server.git`
+`git clone https://github.com/shivaneej/Genessay.git`
 2. Create a Virtual Environment<br>
 `python -m virtualenv name`
 3. Activate the virtual environment<br>
