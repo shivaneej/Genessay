@@ -1,6 +1,6 @@
 <div align="center">
 	<h1>Genessay :page_with_curl:</h1>
-    <img src="static/icons/logo.PNG" height="75" >
+    <img src="static/icons/logo.png" height="75" >
     <p>Compose application letters with ease!</p>
     <br>
 </div>
@@ -32,7 +32,7 @@ Genessay uses various Natural Language Processing (NLP) methods and Recurrent Ne
 The server will run on `http://localhost:8080`
 
 ## Contributors
-* @github/shivaneej
-* @github/CHECKMATErk
-* @github/rohansolsi
-* @github/vickydaiya
+* shivaneej
+* CHECKMATErk
+* rohansolsi
+* vickydaiya
