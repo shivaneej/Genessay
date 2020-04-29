@@ -35,8 +35,8 @@ dataset_sentences = []
 #change these if needed
 BLANK_STRING = '_' * 5
 unigrams = 'dataset/unigrams.csv'
-bigrams = 'dataset/bigrams-x.csv' #old dataset
-# bigrams = 'dataset/bigrams-x.csv' #updated dataset
+bigrams = 'dataset/bigrams-x.csv' #old dataset in shivanee's laptop
+# bigrams = 'dataset/bigrams.csv' #updated dataset in shivanee's laptop, uncomment this and comment previous statement
 trigrams = 'dataset/trigrams.csv'
 dataset = 'dataset/integrated.txt'
 
@@ -62,9 +62,14 @@ def generate_letter():
     named_entities, phrase_entities = extract_named_entities(keyphrases) 
 
     #keywords extraction
-    keywords = keywordExtraction(keyphrases, ['NOUN','VERB','NUM'], 8, True)
-    for index in range(len(keywords)):
-        keywords[index].extend(list(phrase_entities[index].values()))
+    keywords_with_weights = keywordExtraction(keyphrases, ['NOUN','VERB','NUM'], 4, True) #list of dict
+    keywords = []
+    for index in range(len(keywords_with_weights)):
+        keywords_weight_dict = keywords_with_weights[index]
+        min_weight = min(list(keywords_weight_dict.values())) if keywords_weight_dict else 1.0
+        new_dict = {entity : min_weight - 1.0 for entity in list(phrase_entities[index].values())}
+        keywords_weight_dict.update(new_dict)
+        keywords.append(list(keywords_weight_dict.keys()))
 
     #synonyms extraction 
     synonyms = []
@@ -72,7 +77,7 @@ def generate_letter():
         synonyms.append(get_synonyms(keywords_list))
 
     #search sentences from dataset
-    sentences = search_from_keywords(synonyms, dataset_sentences)
+    sentences = search_from_keywords(synonyms, dataset_sentences, keywords_with_weights)
     num_of_sentences = len(sentences)
     print(sentences)
 
@@ -104,6 +109,12 @@ def generate_letter():
         joined_sentences = re.sub('~', answer, joined_sentences, 1)
     #Grammar Correction on the output
     joined_sentences = correctGrammar(joined_sentences)
+
+    #replace ners with <_ner_>
+    keyword_processor = KeywordProcessor()
+    keyword_dict = {str('<_'+ entity + '_>') :  [entity] for entity in list(named_entities.keys())}
+    keyword_processor.add_keywords_from_dict(keyword_dict)
+    joined_sentences = keyword_processor.replace_keywords(joined_sentences)
 
     #return output
     _output = {}

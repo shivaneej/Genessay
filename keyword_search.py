@@ -10,7 +10,7 @@ class Entry(object):
     self.ratio = self.matched/len(nltk.tokenize.word_tokenize(sentence))
     self.rank_sum = 0
     for kw in keywords:
-      self.rank_sum += keywords_rank[kw]
+      self.rank_sum += keywords_rank.get(kw, 0.0)
     return
   def __lt__(self, other):
     if self.matched != other.matched:
@@ -21,18 +21,18 @@ class Entry(object):
       else:
         return self.ratio > other.ratio
 
-def search_from_keywords(synonyms_list, sentences):
+def search_from_keywords(synonyms_list, sentences, keywords_with_weight):
     #synonyms_list is a list of dictionaries
-    global keywords_rank 
+    global keywords_rank
     final_result = []
-    for synonyms_dict in synonyms_list:
+    for index in range(len(synonyms_list)):
+        synonyms_dict = synonyms_list[index]
         keywords_list = list(synonyms_dict.keys())
-        # print("for keywords", keywords_list)
         threshold = 0.5 * len(keywords_list)
         if not keywords_list:
             final_result.append(None)
             continue
-        keywords_rank = {keywords_list[i]:i+1 for i in range(len(keywords_list))}
+        keywords_rank = keywords_with_weight[index]
         matched_sentences = PriorityQueue()
         keyword_processor = KeywordProcessor()
         keyword_processor.add_keywords_from_dict(synonyms_dict)

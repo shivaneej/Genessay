@@ -10,10 +10,6 @@ import spacy
 import time
 import pandas as pd
 
-unigrams = 'dataset/unigrams.csv'
-bigrams = 'dataset/bigrams.csv'
-trigrams = 'dataset/trigrams.csv'
-
 class Matrix:
     def __init__(self, filename):
         #optimised
@@ -145,7 +141,7 @@ def get_option_score(p, options, features, named_entities): #pmi score for optio
             t = time.time()    
             feature_word_index = p.get_word_index(feature)
             option_index = p.get_word_index(option)
-            print("Searching time", time.time() - t)
+            # print("Searching time", time.time() - t)
             if (feature_word_index != -1 and option_index != -1):
                 pmi = p.get_value(feature_word_index, option_index)
                 option_score += pmi              
