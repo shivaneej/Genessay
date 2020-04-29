@@ -1,3 +1,4 @@
+
 from flask import Flask, jsonify, request, Response, render_template
 import nltk
 from nltk.tokenize import sent_tokenize
@@ -15,6 +16,7 @@ import os
 from model import load
 import time
 from matrixGen import updateMatrices
+from grammar_correction import correctGrammar
 
 app = Flask(__name__)  # static_url_path='', static_folder='static')
 cors = CORS(app)
@@ -96,13 +98,16 @@ def generate_letter():
     joined_sentences = ' '.join(sentences)
     for answer in list(predicted_options.values()):
         joined_sentences = re.sub('~', answer, joined_sentences, 1)
+    #Grammar Correction on the output
+    joined_sentences = correctGrammar(joined_sentences)
 
     #return output
     _output = {}
-    _output['keywords'] = keywords
-    _output['options'] = named_entities
-    _output['synonyms'] = synonyms
-    _output['sentences'] = joined_sentences  
+    _output = {'keywords': keywords, 'options': named_entities, 'synonyms': synonyms, 'sentences': joined_sentences} 
+    # _output['keywords'] = keywords
+    # _output['options'] = named_entities
+    # _output['synonyms'] = synonyms
+    # _output['sentences'] = joined_sentences  
     print(_output)
     return json.dumps(_output), 200
 

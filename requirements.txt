@@ -16,6 +16,7 @@ flashtext==2.7
 Flask==1.1.1
 Flask-Cors==3.0.8
 gast==0.3.3
+gingerit==0.8.0
 google-auth==1.14.0
 google-auth-oauthlib==0.4.1
 google-pasta==0.2.0
