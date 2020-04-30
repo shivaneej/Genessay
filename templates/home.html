@@ -60,6 +60,27 @@
     .navbar-btn:hover, .navbar-btn:visited, .navbar-btn:focus{
         color: white;
     }
+    .inputError:focus{
+        border-color: #FF0000;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+    }
+    .modal-dialog-centered{
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+        min-height: calc(100% - 1rem);
+    }
+    /* #validationError{
+        display: none;
+        padding: 10px;
+        margin: auto;
+    } */
+    @media (min-width: 576px){
+        .modal-dialog-centered {
+            min-height: calc(100% - 3.5rem);
+        }
+    }
     
     </style>
 </head>
@@ -172,14 +193,11 @@
             <div class="row">
                 <div class="col-xs-12 col-md-8 col-md-offset-2 text-center wow fadeInUp">
                     <div class="down-offset ">
-                        <!-- <img src="/static/images/mobile1.png" alt=""> -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!--Work-Section-->
-    <!--Work-Section/-->
     <!--Video-Section-->
     <section class="section-video relative fix" id="howtouse">
         <div class="section-bg overlay-bg alpha">
@@ -207,7 +225,7 @@
                     <div class="col-xs-12 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="well well-lg">
                             <h3>Input</h3>
-                            <div class="space-20"></div>
+                            <div class="space-20" id="validationError" style="color: red; display: none;">Invalid Input!</div>
                             <form id="mainForm">
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -216,8 +234,8 @@
                                             <textarea class="form-control" rows="10" id="form-message" placeholder="Enter keywords or keyphrases" name="userInput" required></textarea>
                                         </div>
                                         <div class="space-10"></div>
-                                        <!-- <button class="btn btn-link no-round text-uppercase" type="submit" onclick="submitForm()"> Generate</button> -->
                                         <input type = "button" class="btn btn-link no-round text-uppercase" onclick="submitForm()" value = "Generate" />
+                                        <!-- <div class="alert alert-danger" role="alert" id="validationError">Invalid Input!</div> -->
                                     </div>
                                 </div>
                             </form>
@@ -241,6 +259,27 @@
                             </form>
                         </div>
             </div>
+
+            <!-- Error Modal -->
+            <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="errorModalLabel">It's not you, it's me!</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">
+                                &times;
+                            </button>
+                        </div>
+                        <div class="modal-body" style="align-content: center;">
+                            <img src="/static/images/error.jpg" alt="Error Message">
+                            <div style="text-align: center; width: 70%; margin: auto;">    
+                                We are sorry! Something went wrong and we couldn't generate the letter for you. 
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="space-80"></div>
             
             <div class="space-80"></div>
@@ -291,35 +330,40 @@
 		if(pwdBox.type === "password")	
 			pwdBox.type = "text";
 		else
-			pwdBox.type = "password";
-
-			
+			pwdBox.type = "password";	
     }
 
     async function submitForm() 
-      {
-         var form = document.getElementById("mainForm");
-         var input = form.userInput.value;
-         var re = new RegExp("^([\\s*\\W*\\d*]*[a-zA-Z]+[\\s*\\W*\\d*]*)+$");
-         if(input == '' || !re.test(input))
-         {
-            alert("Invalid input");
+    {
+        var form = document.getElementById("mainForm");
+        var input = form.userInput.value;
+        var re = new RegExp("^([\\s*\\W*\\d*]*[a-zA-Z]+[\\s*\\W*\\d*]*)+$");
+        var inputTextarea = document.getElementsByTagName("textarea")[0];
+        var errorMsg = document.getElementById("validationError");
+        if(input == '' || !re.test(input))
+        {
+            inputTextarea.classList.add("inputError");
+            errorMsg.style.display = "inline-block";
+            inputTextarea.focus();
             return;
-         }
-         var url = 'http://localhost:8080/letter';
-         req_body = {message : input};
-         console.log(req_body);
-         const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)});
-         const jsonobj = await def.json();
-         console.log(jsonobj);
-         outputString = jsonobj['sentences']
-         if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == ''){
+        }
+        errorMsg.style.display = "none";
+        inputTextarea.classList.remove("inputError");
+        var url = 'http://localhost:8080/letter';
+        req_body = {message : input};
+        console.log(req_body);
+        const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)});
+        const jsonobj = await def.json();
+        console.log(jsonobj);
+        outputString = jsonobj['sentences']
+        if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == ''){
             outputString = '';
-            alert("Apologies! We couldn't generate the letter for you :("); 
-         }
-         console.log(outputString);
-         document.getElementById("output").innerHTML = outputString;
-      }
+            $("#errorModal").modal();
+        }
+        console.log(outputString);
+        document.getElementById("output").innerHTML = outputString;
+    }
+    
     </script>
     <script src="/static/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="/static/js/vendor/bootstrap.min.js"></script>
