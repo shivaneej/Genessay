@@ -71,11 +71,42 @@
         align-items: center;
         min-height: calc(100% - 1rem);
     }
-    /* #validationError{
+    #validationError{
         display: none;
-        padding: 10px;
-        margin: auto;
-    } */
+        /* margin: auto; */
+    }
+    .spinner-border{
+        display: inline-block;
+        width: 3rem;
+        height: 3rem;
+        vertical-align: text-bottom;
+        border: .25em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner-border .75s linear infinite;
+        animation: spinner-border .75s linear infinite;
+    }
+    .text-info {
+        color: #50d1c0!important;
+        font-size: 14px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    @keyframes spinner-border {
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+    .btn-outline-info{
+        color: #50d1c0;
+        border-color: #50d1c0;
+        background-color: transparent;
+    }
+    #loader{
+        display: none;
+    }
+   
     @media (min-width: 576px){
         .modal-dialog-centered {
             min-height: calc(100% - 3.5rem);
@@ -225,7 +256,9 @@
                     <div class="col-xs-12 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
                         <div class="well well-lg">
                             <h3>Input</h3>
-                            <div class="space-20" id="validationError" style="color: red; display: none;">Invalid Input!</div>
+                            <!-- <div class="space-20" id="validationError" style="color: red; display: none;">Invalid Input!</div> -->
+                            <div class="space-20"></div>
+                            <div class="alert alert-danger" role="alert" id="validationError">Invalid Input!</div>
                             <form id="mainForm">
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -234,8 +267,12 @@
                                             <textarea class="form-control" rows="10" id="form-message" placeholder="Enter keywords or keyphrases" name="userInput" required></textarea>
                                         </div>
                                         <div class="space-10"></div>
-                                        <input type = "button" class="btn btn-link no-round text-uppercase" onclick="submitForm()" value = "Generate" />
-                                        <!-- <div class="alert alert-danger" role="alert" id="validationError">Invalid Input!</div> -->
+                                        <input type = "button" class="btn btn-link no-round text-uppercase" onclick="submitForm()" value = "Generate" id="generateBtn"/>
+                                        <button class="btn btn-outline-info" type="button" id="loader" disabled>
+                                            <span class="spinner-border text-info" role="status" aria-hidden="true"></span>
+                                            <span class = "text-info">Generating...</span>
+                                        </button>
+                                        
                                     </div>
                                 </div>
                             </form>
@@ -335,6 +372,8 @@
 
     async function submitForm() 
     {
+        var loader = document.getElementById("loader");
+        var generateBtn = document.getElementById("generateBtn");
         var form = document.getElementById("mainForm");
         var input = form.userInput.value;
         var re = new RegExp("^([\\s*\\W*\\d*]*[a-zA-Z]+[\\s*\\W*\\d*]*)+$");
@@ -343,19 +382,25 @@
         if(input == '' || !re.test(input))
         {
             inputTextarea.classList.add("inputError");
-            errorMsg.style.display = "inline-block";
+            errorMsg.style.display = "block";
             inputTextarea.focus();
             return;
         }
         errorMsg.style.display = "none";
         inputTextarea.classList.remove("inputError");
+        generateBtn.style.display = "none";
+        loader.style.display = "inline";
         var url = 'http://localhost:8080/letter';
         req_body = {message : input};
         console.log(req_body);
-        const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)});
+        const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)}).catch((err) => {
+            $("#errorModal").modal();
+        });
         const jsonobj = await def.json();
         console.log(jsonobj);
         outputString = jsonobj['sentences']
+        loader.style.display = "none";
+        generateBtn.style.display = "inline";
         if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == ''){
             outputString = '';
             $("#errorModal").modal();

@@ -110,12 +110,6 @@ def generate_letter():
     #Grammar Correction on the output
     joined_sentences = correctGrammar(joined_sentences)
 
-    #replace ners with <_ner_>
-    keyword_processor = KeywordProcessor()
-    keyword_dict = {str('<_'+ entity + '_>') :  [entity] for entity in list(named_entities.keys())}
-    keyword_processor.add_keywords_from_dict(keyword_dict)
-    joined_sentences = keyword_processor.replace_keywords(joined_sentences)
-
     #return output
     _output = {}
     _output = {'keywords': keywords, 'options': named_entities, 'synonyms': synonyms, 'sentences': joined_sentences} 

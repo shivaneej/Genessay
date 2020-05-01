@@ -285,6 +285,8 @@ def complete_sentences(sentences_to_fill, keywords_list, named_entities, unigram
     dependencies, parts_of_speech = generation(text_options)
     print(sentences_to_fill)
     print(keywords_list)
+    if not options:
+        return {sentence : '' for sentence in sentences_to_fill}
     predict_blank(unigram_mat, 'unigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords_list, named_entities)
     predict_blank(bigram_mat, 'bigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords_list, named_entities)
     return predict_blank(trigram_mat, 'trigram', sentences_to_fill, options, dependencies, parts_of_speech, keywords_list, named_entities)
