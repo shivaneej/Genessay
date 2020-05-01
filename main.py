@@ -35,8 +35,8 @@ dataset_sentences = []
 #change these if needed
 BLANK_STRING = '_' * 5
 unigrams = 'dataset/unigrams.csv'
-bigrams = 'dataset/bigrams-x.csv' #old dataset in shivanee's laptop
-# bigrams = 'dataset/bigrams.csv' #updated dataset in shivanee's laptop, uncomment this and comment previous statement
+# bigrams = 'dataset/bigrams-x.csv' #old dataset in shivanee's laptop
+bigrams = 'dataset/bigrams.csv' #updated dataset in shivanee's laptop, uncomment this and comment previous statement
 trigrams = 'dataset/trigrams.csv'
 dataset = 'dataset/integrated.txt'
 
@@ -186,7 +186,7 @@ def update():
     return "", 200
    
 #comment when not in debug mode
-# initServer() 
+initServer() 
 
 if __name__ == '__main__':
     initServer()

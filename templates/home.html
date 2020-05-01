@@ -290,7 +290,7 @@
                                             <textarea class="form-control" rows="10" name="form-message" placeholder="" id="output"></textarea>
                                         </div>
                                         <div class="space-10"></div>
-                                        <button class="btn btn-link no-round text-uppercase" type="submit" style="opacity: 0;">Download</button>
+                                        <button class="btn btn-link no-round text-uppercase" type="submit" style="visibility: hidden;">Download</button>
                                     </div>
                                 </div>
                             </form>
@@ -393,20 +393,28 @@
         var url = 'http://localhost:8080/letter';
         req_body = {message : input};
         console.log(req_body);
-        const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)}).catch((err) => {
-            $("#errorModal").modal();
-        });
-        const jsonobj = await def.json();
-        console.log(jsonobj);
-        outputString = jsonobj['sentences']
-        loader.style.display = "none";
-        generateBtn.style.display = "inline";
-        if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == ''){
-            outputString = '';
+        try{
+            const def = await fetch(url, {method: 'post',headers: { 'Content-Type':'application/json' }, body: JSON.stringify(req_body)})
+            const jsonobj = await def.json();
+            console.log(jsonobj);
+            outputString = jsonobj['sentences']
+            if(jsonobj['sentences'] == undefined || jsonobj['sentences'] == ''){
+                outputString = '';
+                $("#errorModal").modal();
+            }
+            console.log(outputString);
+            document.getElementById("output").value = outputString;
+        }
+        catch(err) {
             $("#errorModal").modal();
         }
-        console.log(outputString);
-        document.getElementById("output").innerHTML = outputString;
+        finally{
+            loader.style.display = "none";
+            generateBtn.style.display = "inline";
+        }
+
+        
+        
     }
     
     </script>

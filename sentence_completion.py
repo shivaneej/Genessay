@@ -123,9 +123,9 @@ def get_dependencies(option, sentence): #relation with blank
     for token in tokens:
         words = token.split("_")
         tokens = nltk.word_tokenize(words[0])
-        first_word = tokens[0].lower().strip()
+        first_word = tokens[0].lower().strip() if tokens else None
         tokens = nltk.word_tokenize(words[1])
-        second_word = tokens[0].lower().strip()
+        second_word = tokens[0].lower().strip() if tokens else None
         if(first_word == option or second_word == option):
             if(first_word != option and first_word != "null"):
                 reln_with_blank.add(first_word)
