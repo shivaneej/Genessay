@@ -24,7 +24,7 @@ google-pasta==0.2.0
 googleapis-common-protos==1.51.0
 grpcio==1.28.1
 h5py==2.10.0
-httplib2==0.17.3
+httplib2==0.18.0
 idna==2.9
 inflect==4.1.0
 itsdangerous==1.1.0
