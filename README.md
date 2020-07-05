@@ -32,7 +32,7 @@ Genessay uses various Natural Language Processing (NLP) methods and Recurrent Ne
 The server will run on `http://localhost:8080`
 
 ## Contributors
-* [Shivanee Jaiwsal](https://github.com/shivaneej)
+* [Shivanee Jaiswal](https://github.com/shivaneej)
 * [Rishik Kabra](https://github.com/CHECKMATErk)
 * [Rohan Solsi](https://github.com/rohansolsi)
 * [Vicky Daiya](https://github.com/vickydaiya)
