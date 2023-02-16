@@ -71,5 +71,5 @@ tqdm==4.43.0
 urllib3==1.26.5
 virtualenv==20.0.13
 wasabi==0.6.0
-Werkzeug==1.0.0
+Werkzeug==2.2.3
 wrapt==1.12.1
